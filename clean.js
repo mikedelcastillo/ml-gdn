@@ -82,6 +82,9 @@
 
     try{
       let wp = response.data[0];
+
+      if(wp.status != "publish") throw new Error("Not published");
+
       let title = wp.title.rendered;
       let date = wp.date;
       let text = wp.content.rendered;
@@ -92,13 +95,14 @@
         title, date, text, excerpt, categories,
       };
 
-      console.log(datum);
     } catch(e){
       console.log(e);
       datum.exists = false;
     }
 
     // console.log(datum.exists);
+    let percent = ((i+1)/data.length*100).toFixed(2);
+    console.log(`${i+1} of ${data.length}. ${percent}% done`);
   }
 
   fs.writeFileSync("data/gdn.json", JSON.stringify(data));
