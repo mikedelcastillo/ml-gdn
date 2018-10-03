@@ -80,6 +80,8 @@ function loop(){
   let datum = data.shift();
   if(datum) scrape(datum);
 
+  fs.writeFileSync("data/posts.json", JSON.stringify(fetched));
+
   if(doneCount == total){
     done = true;
     console.log("done");
