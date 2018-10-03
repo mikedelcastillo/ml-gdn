@@ -128,7 +128,7 @@ function scrape(datum){
     loop();
   })
   .catch(e => {
-    console.log(e.response.status, slug);
+    console.log("error", slug);
     scrape(datum);
   });
 }
