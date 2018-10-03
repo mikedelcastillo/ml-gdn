@@ -75,7 +75,7 @@ let total = data.length;
 let done = false;
 
 function loop(){
-  console.log(`${data.length} left`);
+  console.log(`${data.length} left. ${fetched.length} fetched`);
 
   let datum = data.shift();
   if(datum) scrape(datum);
@@ -88,7 +88,7 @@ function loop(){
   }
 }
 
-for(let i = 0; i < 20; i++) loop();
+for(let i = 0; i < 15; i++) loop();
 
 function cleanText(text){
   return text.replace(/\<.*?\>|\n/gmi, '').trim();
@@ -96,7 +96,8 @@ function cleanText(text){
 
 function scrape(datum){
   slugReg.lastIndex = 0;
-  let slug = slugReg.exec(datum.url.split("?")[0])[1].replace(/\//gmi, '');
+  let slug = slugReg.exec(datum.url.split("?")[0])[1].replace(/[^a-z0-9\-]/gmi, '').trim();
+  // console.log(`Fetching ${slug}`);
   datum.slug = slug;
   let restUrl = `http://theguidon.com/1112/main/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}`;
   axios.get(restUrl).then(({data}) => {
@@ -121,13 +122,13 @@ function scrape(datum){
 
       fetched.push(datum);
 
-      console.log(title);
+      // console.log(title);
     }
     doneCount++;
     loop();
   })
   .catch(e => {
-    console.log(e);
+    console.log(e.response.status, slug);
     scrape(datum);
   });
 }
