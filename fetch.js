@@ -90,10 +90,10 @@ function loop(){
   }
 }
 
-for(let i = 0; i < 15; i++) loop();
+for(let i = 0; i < 25; i++) loop();
 
 function cleanText(text){
-  return text.replace(/\<.*?\>|\n/gmi, '').trim();
+  return text.replace(/\<.*?\>|\n|\ {2,}/gmi, ' ').trim();
 }
 
 function scrape(datum){
